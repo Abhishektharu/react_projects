@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef, useReducer } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -12,6 +12,18 @@ function App() {
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState("");
 
+  //use useRef hook
+  const passwordRef = useRef(null);
+  const copyPassword = useCallback(() => {
+    //to select after copy
+    passwordRef.current.select();
+    //to select range of characters
+    passwordRef.current.setSelectionRange(0, 8);
+
+    
+    window.navigator.clipboard.writeText(password);
+  }, [password]);
+
   const passwordGenerator = useCallback(() => {
     let passw = "";
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -19,7 +31,7 @@ function App() {
     if (numAllowed) str += "0123456789";
     if (charAllowed) str += "!@#$%^&*-_+=[]{}~`";
 
-    for (let i = 1; i <= str.length; i++) {
+    for (let i = 1; i <= length; i++) {
       // +1 to avoid 0 and to get the str index
       const currentIndex = Math.floor(Math.random() * str.length + 1);
       passw += str.charAt(currentIndex);
@@ -43,10 +55,14 @@ function App() {
             value={password}
             className="outline-none px-3 w-full py-1"
             placeholder="password"
+            ref={passwordRef}
             readOnly
           />
 
-          <button className="outline-none bg-blue-600 text-white px-3 py-1 shrink-0">
+          <button
+            onClick={copyPassword}
+            className="outline-none bg-blue-600 text-white px-3 py-1 shrink-0"
+          >
             copy password
           </button>
         </div>
@@ -59,14 +75,14 @@ function App() {
               max={20}
               value={length}
               className="cursor-pointer"
-              onChange={function (e) {
+              onChange={(e) => {
                 setLength(e.target.value);
               }}
             />
             <label>Length: {length} </label>
           </div>
 
-          {/* <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-1">
             <label htmlFor="numberInput">Numbers</label>
             <input
               className="cursor-pointer"
@@ -90,7 +106,7 @@ function App() {
                 setCharAllowed((prev) => !prev);
               }}
             ></input>
-          </div> */}
+          </div>
         </div>
       </div>
     </>
