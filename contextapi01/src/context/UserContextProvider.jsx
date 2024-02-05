@@ -3,14 +3,14 @@ import UserContext from './UserContext'
 
 const UserContextProvider = ({children})=>{
 
-    const [user, setUser] = useState('');
+    const [user, setUser] = React.useState(null);
     // returns us provider
 
 
     return (
-        <UserContextProvider.Provider value={{user, setUser}}>
+        <UserContext.Provider value={{user, setUser}}>
             {children}
-        </UserContextProvider.Provider>
+        </UserContext.Provider>
     )
 }
 
