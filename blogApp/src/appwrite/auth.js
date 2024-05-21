@@ -1,8 +1,8 @@
 // this file will contain all the methods to appwrite services
 // login, signup , userlogin,
 
-//import config file to access appwrite variables;
-import config from "../../config/config";
+//import conf file to access appwrite variables;
+import conf from "../conf/conf";
 import { Client, Account, ID } from "appwrite";
 
 export class AuthService {
@@ -12,8 +12,8 @@ export class AuthService {
   //create constructor to accept endpoint and id;
   constructor() {
     this.client
-      .setEndpoint(config.appwriteUrl) // Your API Endpoint
-      .setProject(config.appwriteProjectId); // Your project ID
+      .setEndpoint(conf.appwriteUrl) // Your API Endpoint
+      .setProject(conf.appwriteProjectId); // Your project ID
 
     this.account = new Account(client);
   }
