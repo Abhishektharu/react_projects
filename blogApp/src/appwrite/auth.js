@@ -15,7 +15,7 @@ export class AuthService {
       .setEndpoint(conf.appwriteUrl) // Your API Endpoint
       .setProject(conf.appwriteProjectId); // Your project ID
 
-    this.account = new Account(client);
+    this.account = new Account(this.client);
   }
 
   //object will be passed in this function
@@ -44,9 +44,9 @@ export class AuthService {
     }
   }
 
-  async getUserAccout(){
+  async getUserAccount(){
     try {
-        return this.account.get();
+        return await this.account.get();
     } catch (error) {
         console.log("Appwrite Error :: " + error);
     }

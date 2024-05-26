@@ -56,9 +56,9 @@ export class Service {
     }
   }
 
-  async deletePost({slug}) {
+  async deletePost(slug) {
     try {
-      return await databases.deleteDocument(
+       await this.databases.deleteDocument(
         conf.appwriteCollectionId,
         conf.appwriteDatabaseId,
         slug
@@ -68,17 +68,68 @@ export class Service {
     }
   }
 
-  async getPost({slug}){
+  async getPost(slug){
     try {
-         await databases.getDocument(
+         return await this.databases.getDocument(
             conf.appwriteCollectionId,
             conf.appwriteDatabaseId,
             slug,
         )
 
-        return true;
     } catch (error) {
         console.log("Error Appwrite getPost :: ", error);
     }
   }
+
+  //returns the posts which are active in status
+  async getPosts(query = Query.equals("index_status", ["active"])){
+    try {
+      return await this.databases.getDocument(
+        conf.appwriteCollectionId,
+        conf.appwriteDatabaseId,
+        query,
+      )
+    } catch (error) {
+      console.log("Error Appwrite service :: ", error);
+    }
+  }
+
+  async uploadFile(file){
+    try {
+      return await this.storage.createFile(
+        ID.unique(),
+        conf.appwriteBucketId,
+        file,
+      )
+    } catch (error) {
+      console.log("Appwrite service error :: " , error);
+    }
+  }
+
+  async deleteFile(fileId){
+    try {
+      await this.storage.deleteFile(
+        conf.appwriteBucketId,
+        fileId,
+      )
+    } catch (error) {
+      console.log("Appwrite service Error :: " , error);
+
+    }
+  }
+
+  async getPreview(fileId){
+    try {
+      await this.storage.getFilePreview(
+        //bucketId
+        conf.appwriteBucketId,
+        fileId,
+      )
+    } catch (error) {
+      
+    }
+  }
 }
+
+const service = new Service();
+export default service
