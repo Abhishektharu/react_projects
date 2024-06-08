@@ -126,7 +126,7 @@ export class Service {
         fileId,
       )
     } catch (error) {
-      
+      console.log(error);
     }
   }
 }
